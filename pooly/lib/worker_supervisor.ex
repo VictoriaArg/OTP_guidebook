@@ -16,7 +16,7 @@ defmodule Pooly.WorkerSupervisor do
     ]
 
     opts = [
-      strategy: :simple_for_one,
+      strategy: :simple_one_for_one,
       max_restarts: 5,
       max_seconds: 5
     ]
