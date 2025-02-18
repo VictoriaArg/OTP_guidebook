@@ -62,7 +62,8 @@ defmodule Pooly.PoolServer do
       [worker | rest] ->
         ref = Process.monitor(from_pid)
         true = :ets.insert(monitors, {worker, ref})
-        {:reply, worker, %{state | worker: rest}}
+
+        {:reply, worker, %{state | workers: rest}}
 
       [] ->
         {:reply, :noproc, state}
