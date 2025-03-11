@@ -26,3 +26,9 @@ defmodule SampleWorker do
     {:stop, :normal, state}
   end
 end
+
+# w1 = Pooly.checkout "Pool1"
+# w2 = Pooly.checkout "Pool1"
+# w3 = Pooly.checkout "Pool1"
+# SampleWorker.work_for w1, 50_000
+# Pooly.checkout "Pool1", true, :infinity
