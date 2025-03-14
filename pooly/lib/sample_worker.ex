@@ -14,21 +14,23 @@ defmodule SampleWorker do
   end
 
   def handle_call(:stop, _from, state) do
+    IO.inspect("STOP")
     {:stop, :normal, :ok, state}
+  end
+
+  def handle_cast({:work_for, duration}, state) do
+    IO.inspect("work for #{duration}")
+    :timer.sleep(duration)
+    {:stop, :normal, state}
   end
 
   def work_for(pid, duration) do
     GenServer.cast(pid, {:work_for, duration})
-  end
-
-  def handle_cast({:work_for, duration}, state) do
-    :timer.sleep(duration)
-    {:stop, :normal, state}
   end
 end
 
 # w1 = Pooly.checkout "Pool1"
 # w2 = Pooly.checkout "Pool1"
 # w3 = Pooly.checkout "Pool1"
-# SampleWorker.work_for w1, 50_000
+# SampleWorker.work_for w1, 10_000
 # Pooly.checkout "Pool1", true, :infinity

@@ -148,7 +148,7 @@ defmodule Pooly.PoolServer do
 
   def handle_info(
         {:EXIT, pid, _reason},
-        state = %{monitors: monitors, workers: workers, worker_sup: worker_sup}
+        state = %{monitors: monitors, workers: _workers, worker_sup: _worker_sup}
       ) do
     case :ets.lookup(monitors, pid) do
       [{pid, ref}] ->
@@ -182,7 +182,7 @@ defmodule Pooly.PoolServer do
     case :queue.out(waiting) do
       {{:value, {from, ref}}, left} ->
         true = :ets.insert(monitors, {pid, ref})
-        Genserver.reply(from, pid)
+        GenServer.reply(from, pid)
         %{state | waiting: left}
 
       {:empty, empty} when overflow > 0 ->
@@ -212,7 +212,7 @@ defmodule Pooly.PoolServer do
       {{:value, {from, ref}}, left} ->
         new_worker = new_worker(worker_sup)
         true = :ets.insert(monitors, {new_worker, ref})
-        Genserver.reply(from, new_worker)
+        GenServer.reply(from, new_worker)
         %{state | waiting: left}
 
       {:empty, empty} when overflow > 0 ->
